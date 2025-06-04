@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherPro - Real-time Weather Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-cloud-sun"></i>
+                    <h1>WeatherPro</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="unit-toggle" id="unitToggle">
+                        <span class="unit-label">°C</span>
+                    </button>
+                    <button class="location-btn" id="currentLocationBtn" title="Use current location">
+                        <i class="fas fa-location-arrow"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Search Section -->
+            <section class="search-section">
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Enter city name or zip code..."
+                            class="search-input"
+                        >
+                        <button class="search-btn" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div class="recent-searches" id="recentSearches">
+                        <h3>Recent Searches</h3>
+                        <div class="recent-list" id="recentList">
+                            <!-- Recent searches will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading State -->
+            <div class="loading" id="loadingState">
+                <div class="loading-spinner"></div>
+                <p>Fetching weather data...</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error-state" id="errorState">
+                <div class="error-content">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Oops! Something went wrong</h3>
+                    <p id="errorMessage">Unable to fetch weather data. Please try again.</p>
+                    <button class="retry-btn" id="retryBtn">
+                        <i class="fas fa-redo"></i>
+                        Try Again
+                    </button>
+                </div>
+            </div>
+
+            <!-- Weather Dashboard -->
+            <div class="weather-dashboard" id="weatherDashboard">
+                <!-- Current Weather -->
+                <section class="current-weather">
+                    <div class="weather-card main-card">
+                        <div class="weather-header">
+                            <div class="location-info">
+                                <h2 id="currentLocation">New York, NY</h2>
+                                <p id="currentDate">Monday, December 4, 2024</p>
+                            </div>
+                            <div class="weather-icon-main">
+                                <img id="currentWeatherIcon" src="/placeholder.svg?height=100&width=100" alt="Weather Icon">
+                            </div>
+                        </div>
+                        <div class="weather-main">
+                            <div class="temperature-display">
+                                <span class="temperature" id="currentTemp">22°</span>
+                                <div class="temperature-details">
+                                    <span class="feels-like">Feels like <span id="feelsLike">25°</span></span>
+                                    <span class="temp-range">
+                                        <span id="tempHigh">28°</span> / <span id="tempLow">18°</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="weather-description">
+                                <h3 id="weatherCondition">Partly Cloudy</h3>
+                                <p id="weatherDescription">Partly cloudy with a chance of rain</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Weather Details -->
+                <section class="weather-details">
+                    <h3 class="section-title">Weather Details</h3>
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-label">Visibility</span>
+                                <span class="detail-value" id="visibility">10 km</span>
+                            </div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-label">Humidity</span>
+                                <span class="detail-value" id="humidity">65%</span>
+                            </div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-wind"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-label">Wind Speed</span>
+                                <span class="detail-value" id="windSpeed">12 km/h</span>
+                            </div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-compass"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-label">Wind Direction</span>
+                                <span class="detail-value" id="windDirection">NE</span>
+                            </div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-thermometer-half"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-label">Pressure</span>
+                                <span class="detail-value" id="pressure">1013 hPa</span>
+                            </div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-label">UV Index</span>
+                                <span class="detail-value" id="uvIndex">5</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Hourly Forecast -->
+                <section class="hourly-forecast">
+                    <h3 class="section-title">24-Hour Forecast</h3>
+                    <div class="hourly-scroll">
+                        <div class="hourly-list" id="hourlyList">
+                            <!-- Hourly forecast items will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5-Day Forecast -->
+                <section class="forecast-section">
+                    <h3 class="section-title">5-Day Forecast</h3>
+                    <div class="forecast-grid" id="forecastGrid">
+                        <!-- Forecast cards will be populated here -->
+                    </div>
+                </section>
+
+                <!-- Additional Info -->
+                <section class="additional-info">
+                    <div class="info-grid">
+                        <div class="info-card sunrise-sunset">
+                            <h4>Sun & Moon</h4>
+                            <div class="sun-moon-info">
+                                <div class="sun-info">
+                                    <i class="fas fa-sun"></i>
+                                    <div>
+                                        <span class="label">Sunrise</span>
+                                        <span class="time" id="sunrise">6:42 AM</span>
+                                    </div>
+                                </div>
+                                <div class="sun-info">
+                                    <i class="fas fa-moon"></i>
+                                    <div>
+                                        <span class="label">Sunset</span>
+                                        <span class="time" id="sunset">5:28 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-card air-quality">
+                            <h4>Air Quality</h4>
+                            <div class="air-quality-info">
+                                <div class="aqi-value">
+                                    <span class="aqi-number" id="aqiValue">42</span>
+                                    <span class="aqi-label" id="aqiLabel">Good</span>
+                                </div>
+                                <div class="aqi-description">
+                                    <p id="aqiDescription">Air quality is satisfactory for most people.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <i class="notification-icon"></i>
+            <span class="notification-message"></span>
+            <button class="notification-close" onclick="hideNotification()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div class="modal-overlay" id="apiKeyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>API Key Required</h3>
+                <button class="modal-close" onclick="closeApiKeyModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>To use this weather dashboard, you need an OpenWeatherMap API key.</p>
+                <div class="api-steps">
+                    <ol>
+                        <li>Visit <a href="https://openweathermap.org/api" target="_blank">OpenWeatherMap</a></li>
+                        <li>Sign up for a free account</li>
+                        <li>Get your API key</li>
+                        <li>Enter it below</li>
+                    </ol>
+                </div>
+                <div class="form-group">
+                    <label for="apiKeyInput">API Key:</label>
+                    <input type="text" id="apiKeyInput" placeholder="Enter your OpenWeatherMap API key">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="useDemoMode()">Use Demo Mode</button>
+                    <button class="btn btn-primary" onclick="saveApiKey()">Save & Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
